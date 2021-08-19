@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="main">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="File">
+      <UniqueIdentifier>{aa45d6e3-fc4f-4538-867a-a17673894cc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PEParser">
+      <UniqueIdentifier>{ae8c22a0-cf0f-496b-8f64-f798bc409a51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="injection_methods">
+      <UniqueIdentifier>{16dd5a29-27d6-4cfe-a828-0ed2f123900c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{cebfa2b6-22e5-4aeb-bb5e-763a42e9ecb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="injection_methods\manual_map">
+      <UniqueIdentifier>{009f7db8-abe0-4ea8-a0b1-51694046478a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="File.cpp">
+      <Filter>File</Filter>
+    </ClCompile>
+    <ClCompile Include="PEParser.cpp">
+      <Filter>PEParser</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="manual_map.cpp">
+      <Filter>injection_methods\manual_map</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="includes.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="File.h">
+      <Filter>File</Filter>
+    </ClInclude>
+    <ClInclude Include="PEParser.h">
+      <Filter>PEParser</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="injection_methods.h">
+      <Filter>injection_methods</Filter>
+    </ClInclude>
+    <ClInclude Include="definitions.h">
+      <Filter>main</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="asm.asm">
+      <Filter>main</Filter>
+    </MASM>
+  </ItemGroup>
+</Project>

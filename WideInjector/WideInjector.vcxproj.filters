@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="File">
+      <UniqueIdentifier>{66d54fbb-096a-4461-b8f1-17380f1abdf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="manual_map">
+      <UniqueIdentifier>{2251d384-43c4-4b5d-884a-a62aa63ce92e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main">
+      <UniqueIdentifier>{e0c34f76-93c2-4d4b-bd9e-c01475363a9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PEParser">
+      <UniqueIdentifier>{38dae4a2-5006-4725-a35e-b90517ced2ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{84163fc9-6ad6-4fc2-9529-d8530d0b0afa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="loader">
+      <UniqueIdentifier>{c6b5aadc-9225-407a-a4df-56270c278c08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IVBox">
+      <UniqueIdentifier>{2f0d5a75-b898-41ba-94ee-00539e86d616}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{77e45862-e018-49be-8f8f-b92290b21196}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="definitions.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="includes.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="File.h">
+      <Filter>File</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="PEParser.h">
+      <Filter>PEParser</Filter>
+    </ClInclude>
+    <ClInclude Include="manual_map.h">
+      <Filter>manual_map</Filter>
+    </ClInclude>
+    <ClInclude Include="IVBox.h">
+      <Filter>IVBox</Filter>
+    </ClInclude>
+    <ClInclude Include="loader.h">
+      <Filter>loader</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>resources</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="File.cpp">
+      <Filter>File</Filter>
+    </ClCompile>
+    <ClCompile Include="manual_map.cpp">
+      <Filter>manual_map</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="PEParser.cpp">
+      <Filter>PEParser</Filter>
+    </ClCompile>
+    <ClCompile Include="IVBox.cpp">
+      <Filter>IVBox</Filter>
+    </ClCompile>
+    <ClCompile Include="loader.cpp">
+      <Filter>loader</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="asm.asm">
+      <Filter>main</Filter>
+    </MASM>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="WideInjector.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\Reverse\vboxdrv\vboxdrv.sys">
+      <Filter>resources</Filter>
+    </None>
+  </ItemGroup>
+</Project>
