@@ -47,7 +47,7 @@
     <ResourceCompile Include="WideInjector.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\Reverse\vboxdrv\vboxdrv.sys" />
+    <None Include="vboxdrv.sys" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -114,6 +114,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>D:\Libs;$(IncludePath)</IncludePath>
+    <OutDir>..\..\..\$(SolutionName)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

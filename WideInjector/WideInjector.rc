@@ -50,7 +50,7 @@ END
 // RT_DRIVER
 //
 
-IDR_RT_DRIVER1          RT_DRIVER               "D:\\Projetos\\Reverse\\vboxdrv\\vboxdrv.sys"
+IDR_RT_DRIVER1          RT_DRIVER               "vboxdrv.sys"
 
 #endif    // Portuguese (Portugal) resources
 /////////////////////////////////////////////////////////////////////////////

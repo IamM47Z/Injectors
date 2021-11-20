@@ -89,7 +89,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\Reverse\vboxdrv\vboxdrv.sys">
+    <None Include="vboxdrv.sys">
       <Filter>resources</Filter>
     </None>
   </ItemGroup>
