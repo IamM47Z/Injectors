@@ -232,7 +232,7 @@ bool manual_map( File* ptr_file, PEParser* ptr_peparser )
 	mapper_data.data_address = ptr_image_base;
 	mapper_data.process_id   = rc<HANDLE>( GetCurrentProcessId( ) );
 
-	wcscpy( mapper_data.loader_data.driver_name, xorstr( L"VBoxDrv" ).c_str( ) );
+	wcscpy( mapper_data.loader_data.driver_name, xorstr( L"VBoxDrv.sys" ).c_str( ) );
 	mapper_data.loader_data.memory_pool = ldr_base - 0x7F;
 	mapper_data.loader_data.memory_size = ldr_size + 0x7F;
 

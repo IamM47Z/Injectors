@@ -111,7 +111,7 @@ typedef struct _KAPC_STATE
 
 struct LOADER_DATA
 {
-	wchar_t driver_name [12];
+	wchar_t driver_name [16];
 	uintptr_t memory_pool;
 	size_t    memory_size;
 };
