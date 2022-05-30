@@ -5,8 +5,6 @@
 #include <Windows.h>
 #include <TlHelp32.h>
 
-#include <XorStr/xorstr.hpp>
-
 #include "definitions.h"
 
 #include "utils.h"

@@ -8,8 +8,6 @@
 #include <filesystem>
 #include <winternl.h>
 
-#include <XorStr/xorstr.hpp>
-
 #include "resource.h"
 #include "definitions.h"
 

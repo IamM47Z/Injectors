@@ -32,7 +32,7 @@ void utils::create_random_console_title( size_t length )
     delete [ ] title;
 }
 
-RTL_PROCESS_MODULE_INFORMATION utils::get_kernel_module_info( char* module_name )
+RTL_PROCESS_MODULE_INFORMATION utils::get_kernel_module_info( const char* module_name )
 {
     ULONG required_size;
     NtQuerySystemInformation( sc<SYSTEM_INFORMATION_CLASS>( 0x0B ), nullptr, NULL, &required_size ); // 0xB -> SystemModuleInformation
@@ -101,7 +101,7 @@ std::string utils::convert_nt_path_to_dos_path( std::string nt_path )
     return status ? dos_path : "";
 }
 
-uintptr_t utils::get_kernel_module_function( char* module_name, uint16_t function_ordinal, char* function_name )
+uintptr_t utils::get_kernel_module_function( const char* module_name, uint16_t function_ordinal, const char* function_name )
 {
     if ( !module_name || ( !function_ordinal && !function_name ) )
         return NULL;
@@ -110,8 +110,7 @@ uintptr_t utils::get_kernel_module_function( char* module_name, uint16_t functio
     if ( !module.ImageSize )
         return NULL;
 
-    auto ptr_file = new File(
-        utils::convert_nt_path_to_dos_path( cs<char*>( rc<const char*>( module.FullPathName ) ) ).c_str( ) );
+    auto ptr_file = new File( utils::convert_nt_path_to_dos_path( rc<const char*>( module.FullPathName ) ).c_str( ) );
     if ( !ptr_file->read_file( ) )
     {
         delete ptr_file;

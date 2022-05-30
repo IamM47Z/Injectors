@@ -5,7 +5,7 @@ int main( int argc, char* argv[] )
     HANDLE token;
     if ( !OpenProcessToken( GetCurrentProcess( ), TOKEN_ADJUST_PRIVILEGES, &token ) )
     {
-        printf( xorstr( "\nError Opening Process Token" ).c_str( ) );
+        printf( "\nError Opening Process Token" );
 
         PAUSE_EXIT( );
 
@@ -15,7 +15,7 @@ int main( int argc, char* argv[] )
     LUID luid;
     if ( !LookupPrivilegeValueW( nullptr, L"SeLoadDriverPrivilege", &luid ) )
     {
-        printf( xorstr( "\nError Looking up For Privilege Value" ).c_str( ) );
+        printf( "\nError Looking up For Privilege Value" );
 
         PAUSE_EXIT( );
 
@@ -30,7 +30,7 @@ int main( int argc, char* argv[] )
     if ( !AdjustTokenPrivileges( token, FALSE, &tp, sizeof( TOKEN_PRIVILEGES ),
                                  ( PTOKEN_PRIVILEGES ) NULL, ( PDWORD ) NULL ) )
     {
-        printf( xorstr( "\nError Adjusting Privileges" ).c_str( ) );
+        printf( "\nError Adjusting Privileges" );
 
         PAUSE_EXIT( );
 
@@ -47,10 +47,10 @@ int main( int argc, char* argv[] )
 
     utils::create_random_console_title( sc<size_t>( rand( ) % 50 ) + 1 );
 
-    printf( xorstr( "WideInjector by M47Z\n\nUsage: wi.exe \"Path_to_Sys\"\n\tyou can also insert the values manually by opening wi.exe\n" ).c_str( ) );
+    printf( "WideInjector by M47Z\n\nUsage: wi.exe \"Path_to_Sys\"\n\tyou can also insert the values manually by opening wi.exe\n" );
 
     if ( !info_in_commandline )
-        printf( xorstr( "\nInsert the path to the Sys: " ).c_str( ) );
+        printf( "\nInsert the path to the Sys: " );
 
     const auto file_path = info_in_commandline ? argv[ 1 ] : new char[ MAX_PATH ];
 
@@ -64,7 +64,7 @@ int main( int argc, char* argv[] )
 
     if ( !ptr_file->read_file( ) )
     {
-        printf( xorstr( "\nError Checking and Reading Sys" ).c_str( ) );
+        printf( "\nError Checking and Reading Sys" );
 
         PAUSE_EXIT( );
 
@@ -73,13 +73,13 @@ int main( int argc, char* argv[] )
         return 1;
     }
 
-    printf( xorstr( "\nChecking if the file is a valid x64 Sys" ).c_str( ) );
+    printf( "\nChecking if the file is a valid x64 Sys" );
 
     const auto ptr_peparser = new PEParser( ptr_file->get_file_base_address( ) );
 
     if ( !ptr_peparser->parse( ) )
     {
-        printf( xorstr( "\nError parsing the File" ).c_str( ) );
+        printf( "\nError parsing the File" );
 
         PAUSE_EXIT( );
 
@@ -93,7 +93,7 @@ int main( int argc, char* argv[] )
     if ( !ptr_peparser->get_subsystem( ) ||
          ptr_peparser->get_machine( ) != IMAGE_FILE_MACHINE_AMD64 )
     {
-        printf( xorstr( "\nThe file is Not a valid x64 Sys" ).c_str( ) );
+        printf( "\nThe file is Not a valid x64 Sys" );
 
         PAUSE_EXIT( );
 
@@ -104,11 +104,11 @@ int main( int argc, char* argv[] )
         return 1;
     }
 
-    printf( xorstr( "\nThe file is a valid x64 Sys" ).c_str( ) );
+    printf( "\nThe file is a valid x64 Sys" );
 
     if ( !manual_map( ptr_file, ptr_peparser ) )
     {
-        printf( xorstr( "\nError Mapping the Sys" ).c_str( ) );
+        printf( "\nError Mapping the Sys" );
 
         PAUSE_EXIT( );
 
@@ -119,7 +119,7 @@ int main( int argc, char* argv[] )
         return 1;
     }
 
-    printf( xorstr( "\n\nFile successfully loaded!" ).c_str( ) );
+    printf( "\n\nFile successfully loaded!" );
 
     PAUSE_EXIT( );
 

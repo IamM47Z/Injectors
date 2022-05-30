@@ -129,7 +129,7 @@ bool injection_methods::manual_map( File* ptr_file, PEParser* ptr_peparser, DWOR
 		return false;
 	}
 
-	printf( xorstr( "\nThe process is a valid x64 Process\nAllocating Dll at the target Process" ).c_str( ) );
+	printf( "\nThe process is a valid x64 Process\nAllocating Dll at the target Process" );
 
 	auto ptr_ex_image_base = rc<char*>( VirtualAllocEx( h_proc, rc<void*>( ptr_peparser->get_image_base( ) ),
 											ptr_peparser->get_image_size( ), MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE ) );
@@ -172,7 +172,7 @@ bool injection_methods::manual_map( File* ptr_file, PEParser* ptr_peparser, DWOR
 		return false;
 	}
 
-	printf( xorstr( "\nDll allocated at %p\nAllocating mapper shellcode at the target Process" ).c_str( ), ptr_ex_image_base );
+	printf( "\nDll allocated at %p\nAllocating mapper shellcode at the target Process", ptr_ex_image_base );
 
 	MAPPER_DATA mapper_data;
 	ZeroMemory( &mapper_data, sizeof( MAPPER_DATA ) );
@@ -202,7 +202,7 @@ bool injection_methods::manual_map( File* ptr_file, PEParser* ptr_peparser, DWOR
 		return false;
 	}
 
-	printf( xorstr( "\nShellcode allocated at %p\nPassing data to target process" ).c_str( ), ptr_ex_shellcode );
+	printf( "\nShellcode allocated at %p\nPassing data to target process", ptr_ex_shellcode );
 
 	mapper_data.base_address			= rc<uintptr_t>( ptr_ex_image_base );
 
@@ -235,7 +235,7 @@ bool injection_methods::manual_map( File* ptr_file, PEParser* ptr_peparser, DWOR
 		return false;
 	}
 
-	printf( xorstr( "\nData allocated at 0x%p\nCreating remote thread" ).c_str( ), ptr_ex_mapper_data );
+	printf( "\nData allocated at 0x%p\nCreating remote thread", ptr_ex_mapper_data );
 
 	auto h_thread = CreateRemoteThread( h_proc, nullptr, NULL, rc<PTHREAD_START_ROUTINE>( ptr_ex_shellcode ), ptr_ex_mapper_data, NULL, nullptr );
 	if ( !h_thread )
@@ -249,11 +249,11 @@ bool injection_methods::manual_map( File* ptr_file, PEParser* ptr_peparser, DWOR
 		return false;
 	}
 
-	printf( xorstr( "\nWaiting for thread to end" ).c_str( ) );
+	printf( "\nWaiting for thread to end" );
 
 	WaitForSingleObject( h_thread, INFINITE );
 
-	printf( xorstr( "\nThread just finished!\nCleaning up" ).c_str( ) );
+	printf( "\nThread just finished!\nCleaning up" );
 
 	CloseHandle( h_thread );
 	

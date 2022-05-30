@@ -71,7 +71,7 @@ NTSTATUS injected_shellcode( PMAPPER_DATA ptr_mapper_data )
 
 bool manual_map( File* ptr_file, PEParser* ptr_peparser )
 {
-	printf( xorstr( "\nLoading Vulnerable Driver" ).c_str( ) );
+	printf( "\nLoading Vulnerable Driver" );
 
 	auto drv_rc_handle = FindResourceW( GetModuleHandle( nullptr ), MAKEINTRESOURCEW( IDR_RT_DRIVER1 ), L"RT_DRIVER" );
 	if ( !drv_rc_handle )
@@ -93,22 +93,22 @@ bool manual_map( File* ptr_file, PEParser* ptr_peparser )
 	if ( !GetSystemDirectoryW( rc<LPWSTR>( &sys_path ), MAX_PATH ) )
 		return false;
 
-	auto path_buffer = std::wstring( sys_path ) + xorstr( L"\\drivers\\" ).c_str( );
+	auto path_buffer = std::wstring( sys_path ) + L"\\drivers\\";
 
-	if ( !loader::load_driver( ptr_drv_data, drv_size, path_buffer, xorstr( L"VBoxDrv" ).c_str( ) ) )
+	if ( !loader::load_driver( ptr_drv_data, drv_size, path_buffer, L"VBoxDrv" ) )
 	{
-		loader::unload_driver( path_buffer, xorstr( L"VBoxDrv" ).c_str( ) );
+		loader::unload_driver( path_buffer, L"VBoxDrv" );
 
 		return false;
 	}
 
-	printf( xorstr( "\nInitializing VBox Interface" ).c_str( ) );
+	printf( "\nInitializing VBox Interface" );
 
 	auto vbox_interface = new IVBox( );
 
 	if ( !vbox_interface->open( ) )
 	{
-		loader::unload_driver( path_buffer, xorstr( L"VBoxDrv" ).c_str( ) );
+		loader::unload_driver( path_buffer, L"VBoxDrv" );
 
 		return false;
 	}
@@ -117,12 +117,12 @@ bool manual_map( File* ptr_file, PEParser* ptr_peparser )
 	{
 		vbox_interface->close( );
 
-		loader::unload_driver( path_buffer, xorstr( L"VBoxDrv" ).c_str( ) );
+		loader::unload_driver( path_buffer, L"VBoxDrv" );
 
 		return false;
 	}
 
-	printf( xorstr( "\nVBox Interface Initialized!" ).c_str( ) );
+	printf( "\nVBox Interface Initialized!" );
 
 	MAPPER_DATA mapper_data;
 	ZeroMemory( &mapper_data, sizeof( MAPPER_DATA ) );
@@ -135,29 +135,29 @@ bool manual_map( File* ptr_file, PEParser* ptr_peparser )
 	{
 		vbox_interface->close( );
 
-		loader::unload_driver( path_buffer, xorstr( L"VBoxDrv" ).c_str( ) );
+		loader::unload_driver( path_buffer, L"VBoxDrv" );
 
 		return false;
 	}
 
-	printf( xorstr( "\nAllocating Memory on User Space" ).c_str( ) );
+	printf( "\nAllocating Memory on User Space" );
 
 	auto ptr_ldr_base = rc<char*>( VirtualAlloc( nullptr, ldr_size, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE ) );
 	if ( !ptr_ldr_base )
 	{
 		vbox_interface->close( );
 
-		loader::unload_driver( path_buffer, xorstr( L"VBoxDrv" ).c_str( ) );
+		loader::unload_driver( path_buffer, L"VBoxDrv" );
 
 		return false;
 	}
 
-	printf( xorstr( "\nMemory Allocated at 0x%p\nWriting Shellcode to memory" ).c_str( ), ptr_ldr_base );
+	printf( "\nMemory Allocated at 0x%p\nWriting Shellcode to memory", ptr_ldr_base );
 
 	memcpy( ptr_ldr_base, "\x48\xB9", 2 );
 	memcpy( ptr_ldr_base + 10, injected_shellcode, shellcode_size - 10 );
 
-	printf( xorstr( "\nMapping the Driver" ).c_str( ) );
+	printf( "\nMapping the Driver" );
 
 	auto ptr_image_base = rc<char*>( VirtualAlloc( nullptr, ptr_peparser->get_image_size( ), MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE ) );
 	if ( !ptr_image_base )
@@ -166,14 +166,14 @@ bool manual_map( File* ptr_file, PEParser* ptr_peparser )
 
 		vbox_interface->close( );
 
-		loader::unload_driver( path_buffer, xorstr( L"VBoxDrv" ).c_str( ) );
+		loader::unload_driver( path_buffer, L"VBoxDrv" );
 
 		return false;
 	}
 
 	ptr_peparser->map( ptr_image_base );
 
-	printf( xorstr( "\nResolving File Imports" ).c_str( ) );
+	printf( "\nResolving File Imports" );
 
 	const auto ptr_nt_headers = ptr_peparser->get_nt_headers( );
 	const auto ptr_optional_header = &( ptr_peparser->get_nt_headers( )->OptionalHeader );
@@ -199,7 +199,7 @@ bool manual_map( File* ptr_file, PEParser* ptr_peparser )
 		}
 	}
 
-	printf( xorstr( "\nAllocating Memory on Kernel Space" ).c_str( ) );
+	printf( "\nAllocating Memory on Kernel Space" );
 
 	const auto ldr_base = vbox_interface->allocate_ldr( ldr_size );
 	if ( !ldr_base )
@@ -210,29 +210,29 @@ bool manual_map( File* ptr_file, PEParser* ptr_peparser )
 
 		vbox_interface->close( );
 
-		loader::unload_driver( path_buffer, xorstr( L"VBoxDrv" ).c_str( ) );
+		loader::unload_driver( path_buffer, L"VBoxDrv" );
 
 		return false;
 	}
 
-	printf( xorstr( "\nMemory allocated at 0x%p" ).c_str( ), ldr_base );
+	printf( "\nMemory allocated at 0x%p", ldr_base );
 
 	mapper_data._ExFreePoolWithTag = rc<void( * ) ( PVOID, ULONG )>(
-		utils::get_kernel_module_function( xorstr( "ntoskrnl.exe" ).c_str( ), NULL, xorstr( "ExFreePoolWithTag" ).c_str( ) ) );
+		utils::get_kernel_module_function( "ntoskrnl.exe", NULL, "ExFreePoolWithTag" ) );
 	mapper_data._ExAllocatePoolWithTag = rc<PVOID( * ) ( POOL_TYPE, SIZE_T, ULONG )>(
-		utils::get_kernel_module_function( xorstr( "ntoskrnl.exe" ).c_str( ), NULL, xorstr( "ExAllocatePoolWithTag" ).c_str( ) ) );
+		utils::get_kernel_module_function( "ntoskrnl.exe", NULL, "ExAllocatePoolWithTag" ) );
 	mapper_data._MmCopyVirtualMemory = rc<NTSTATUS( * ) ( PEPROCESS, PVOID, PEPROCESS, PVOID, SIZE_T, KPROCESSOR_MODE, PSIZE_T )>(
-		utils::get_kernel_module_function( xorstr( "ntoskrnl.exe" ).c_str( ), NULL, xorstr( "MmCopyVirtualMemory" ).c_str( ) ) );
+		utils::get_kernel_module_function( "ntoskrnl.exe", NULL, "MmCopyVirtualMemory" ) );
 	mapper_data._IoGetCurrentProcess = rc<PEPROCESS( * ) ( )>(
-		utils::get_kernel_module_function( xorstr( "ntoskrnl.exe" ).c_str( ), NULL, xorstr( "IoGetCurrentProcess" ).c_str( ) ) );
+		utils::get_kernel_module_function( "ntoskrnl.exe", NULL, "IoGetCurrentProcess" ) );
 	mapper_data._PsLookupProcessByProcessId = rc<NTSTATUS( * ) ( HANDLE, PEPROCESS* )>(
-		utils::get_kernel_module_function( xorstr( "ntoskrnl.exe" ).c_str( ), NULL, xorstr( "PsLookupProcessByProcessId" ).c_str( ) ) );
+		utils::get_kernel_module_function( "ntoskrnl.exe", NULL, "PsLookupProcessByProcessId" ) );
 
 	mapper_data.data_size    = ptr_peparser->get_image_size( );
 	mapper_data.data_address = ptr_image_base;
 	mapper_data.process_id   = rc<HANDLE>( GetCurrentProcessId( ) );
 
-	wcscpy( mapper_data.loader_data.driver_name, xorstr( L"VBoxDrv.sys" ).c_str( ) );
+	wcscpy( mapper_data.loader_data.driver_name, L"VBoxDrv.sys" );
 	mapper_data.loader_data.memory_pool = ldr_base - 0x7F;
 	mapper_data.loader_data.memory_size = ldr_size + 0x7F;
 
@@ -240,7 +240,7 @@ bool manual_map( File* ptr_file, PEParser* ptr_peparser )
 
 	*rc<uintptr_t*>( ptr_ldr_base + 2 ) = ldr_base + shellcode_size;
 
-	printf( xorstr( "\nCopying Data to Kernel Space" ).c_str( ) );
+	printf( "\nCopying Data to Kernel Space" );
 
 	if ( !vbox_interface->load_ldr( ldr_base, rc<uintptr_t*>( ptr_ldr_base ), ldr_size ) )
 	{
@@ -252,30 +252,28 @@ bool manual_map( File* ptr_file, PEParser* ptr_peparser )
 
 		vbox_interface->close( );
 
-		loader::unload_driver( path_buffer, xorstr( L"VBoxDrv" ).c_str( ) );
+		loader::unload_driver( path_buffer, L"VBoxDrv" );
 
 		return false;
 	}
 
-	printf( xorstr( "\nSetting VM for Fast" ).c_str( ) );
+	printf( "\nSetting VM for Fast" );
 
 	if ( vbox_interface->set_vm_for_fast( ) )
 	{
-		printf( xorstr( "\nRunning EntryPoint" ).c_str( ) );
-
-		Sleep( 1000 );
+		printf( "\nRunning EntryPoint" );
 
 		auto status = vbox_interface->run_entry( );
 
 		wchar_t buffer[ 64000 ];
-		if ( !FormatMessageW( FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_FROM_HMODULE, LoadLibraryW( xorstr( L"ntdll.dll" ).c_str( ) ), status,
+		if ( !FormatMessageW( FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_FROM_HMODULE, LoadLibraryW( L"ntdll.dll" ), status,
 						LANG_USER_DEFAULT, buffer, sizeof( buffer ) / sizeof( wchar_t ), nullptr ) )
-			printf( xorstr( "\nDriver EntryPoint attempted to Execute with Return Code 0x%X" ).c_str( ), status );
+			printf( "\nDriver EntryPoint attempted to Execute with Return Code 0x%X", status );
 		else
-			printf( xorstr( "\nDriver EntryPoint attempted to Execute with Return Code 0x%X | %ws" ).c_str( ), status, buffer );
+			printf( "\nDriver EntryPoint attempted to Execute with Return Code 0x%X | %ws", status, buffer );
 	}
 
-	printf( xorstr( "\nCleaning Image" ).c_str( ) );
+	printf( "\nCleaning Image" );
 
 	vbox_interface->free_ldr( ldr_base );
 
@@ -285,7 +283,7 @@ bool manual_map( File* ptr_file, PEParser* ptr_peparser )
 
 	vbox_interface->close( );
 
-	loader::unload_driver( path_buffer, xorstr( L"VBoxDrv" ).c_str( ) );
+	loader::unload_driver( path_buffer, L"VBoxDrv" );
 
 	return true;
 }
